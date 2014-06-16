@@ -16,6 +16,8 @@ public class TestPercolation {
 		// Check that some of the elements in the initialized array are BLOCKED.
 		assertEquals(percolation.grid[0][0], Percolation.BLOCKED) ;
 		assertEquals(percolation.grid[2][3], Percolation.BLOCKED) ;
+		
+		assertTrue(true) ;
 	}
 
 }
