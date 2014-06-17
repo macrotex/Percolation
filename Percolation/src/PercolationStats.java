@@ -1,4 +1,3 @@
-import coursera.adamhl.percolation.Percolation;
 
 
 public class PercolationStats {

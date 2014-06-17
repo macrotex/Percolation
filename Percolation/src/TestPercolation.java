@@ -2,7 +2,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import coursera.adamhl.percolation.Percolation;
 
 public class TestPercolation {
 
@@ -10,7 +9,7 @@ public class TestPercolation {
 	public void PercolationTestsBasic() {
 		// Create a Percolation object.
 		Percolation percolation = new Percolation(10) ;
-		assertTrue(percolation instanceof coursera.adamhl.percolation.Percolation) ;
+		assertTrue(percolation instanceof Percolation) ;
 		
 		// Check that some of the elements in the initialized array are BLOCKED.
 		assertEquals(percolation.grid[0][0], Percolation.FULL) ;
@@ -25,10 +24,46 @@ public class TestPercolation {
 		
 	    percolation.open(1, 1);
 	    assertTrue(percolation.isOpen(1, 1)) ;
-	    
-	    // Does this system percolate? (NO!)
-	    //assertFalse(percolation.percolates()) ;
+
 	}
+
+	
+	@Test
+	public void PercolationTestMainOne() {
+		// Create a Percolation object (case N = 1).
+		Percolation percolation = new Percolation(1) ;
+		assertTrue(percolation instanceof Percolation) ;
+		
+		assertTrue(percolation.isFull(1, 1)) ;
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(1, 1);
+		assertTrue(percolation.percolates()) ;
+	}
+
+	@Test
+	public void PercolationTestMainTwo() {
+		// Create a Percolation object (case N = 2).
+		Percolation percolation = new Percolation(2) ;
+		assertTrue(percolation instanceof Percolation) ;
+		
+		assertTrue(percolation.isFull(1, 1)) ;
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(1, 1);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(1, 2);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(2, 1);
+		assertTrue(percolation.percolates()) ;
+		
+	    percolation.open(2, 2);
+		assertTrue(percolation.percolates()) ;
+	}
+
+	
 
 	// Test for exceptions.
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
