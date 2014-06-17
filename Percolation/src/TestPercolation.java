@@ -63,8 +63,45 @@ public class TestPercolation {
 		assertTrue(percolation.percolates()) ;
 	}
 
-	
+	@Test
+	public void PercolationTestMainFour() {
+		// Create a Percolation object (case N = 4).
+		Percolation percolation = new Percolation(4) ;
+		assertTrue(percolation instanceof Percolation) ;
+		
+		assertTrue(percolation.isFull(1, 1)) ;
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(1, 1);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(1, 2);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(2, 1);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(2, 2);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(2, 3);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(3, 3);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(4, 4);
+		assertFalse(percolation.percolates()) ;
+		
+	    percolation.open(3, 4);
+		assertTrue(percolation.percolates()) ;
+	}
 
+	@Test
+	public void PercolationTestStats1() {
+		PercolationStats perStat = new PercolationStats(200, 100) ;
+	}
+	
 	// Test for exceptions.
 	@Test(expected = java.lang.IndexOutOfBoundsException.class)
 	public void PercolationTestsException1() {

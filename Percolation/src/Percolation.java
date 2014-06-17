@@ -4,6 +4,7 @@ public class Percolation {
     // This is the N x N grid
     public int[][] grid ;
     public int size ;
+    public int numberOpenSites ;
 
     private WeightedQuickUnionUF uf ;
     private int topVirtualSite ;
@@ -27,19 +28,19 @@ public class Percolation {
             }
         }
         
+        // No sites are open.
+        this.numberOpenSites = 0 ;
+        
         // Create a UF object for all the points in the N-by-N grid 
         // PLUS two "virtual" sites (the top and bottom).
         // The "top" virtual site will have index 0.
         // The "bottom" virtual site will have index 1.
         uf = new WeightedQuickUnionUF(N*N + 2);
-        System.out.println(uf.count());
         
         // Set the top and bottom virtual sites.
         this.topVirtualSite    = N * N ;
         this.bottomVirtualSite = N * N + 1 ;
-        System.out.println(this.topVirtualSite);
-        System.out.println(this.bottomVirtualSite);
-        
+                
     }
     
     /*
@@ -66,6 +67,7 @@ public class Percolation {
     public void open(int row, int col) {
         if (this.isFull(row, col)) {
             this.grid[row - 1][col - 1] = OPEN ;
+            this.numberOpenSites = this.numberOpenSites + 1 ;
             
             // We need to connect this site to the open sites
             // to the North, South, East, and West.
