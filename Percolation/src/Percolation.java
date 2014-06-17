@@ -14,6 +14,10 @@ public class Percolation {
     public static final int FULL = 0;
     public static final int OPEN = 1;
     
+    /**
+     * The Percolation class.
+     * @param N
+     */
     public Percolation(int N)              // create N-by-N grid, with all sites blocked
     {
         this.size = N ;
@@ -71,13 +75,13 @@ public class Percolation {
             
             // We need to connect this site to the open sites
             // to the North, South, East, and West.
-            int mySite = rowColToSite(row, col) ;
+            int mySite = this.rowColToSite(row, col) ;
             
             // NORTH
             if (row == 1) {
                 // This is the top row, so connect to the top virtual site
                 //System.out.println("unioning with top Virtual site");
-                this.uf.union(topVirtualSite, mySite);
+                this.uf.union(this.topVirtualSite, mySite);
             } else {
                 // This is NOT the top row, so connect to the above element IF 
                 // the above element is open.
