@@ -1,95 +1,87 @@
 
-
+/**
+ * 
+ * @author Yer Blues
+ *
+ */
 public class PercolationStats {
 
-	private Percolation perc ;
-	private int numberTestsPerformed ;
-	private double[] fractionOpenSites ;
-	
-	// perform T independent computational experiments on an N-by-N grid
-	public PercolationStats(int N, int T)
-	{
-		fractionOpenSites = new double[T] ;
-		
-		
-		// Run T experiments
-		for (int i = 0; i < T; ++i) {
-			perc = new Percolation(N) ;	
-			this.experiment() ;
-			
-			this.numberTestsPerformed = this.numberTestsPerformed + 1 ;
-			this.fractionOpenSites[i] = 
-					(perc.numberOpenSites / (double) (perc.size * perc.size)) ;
-		}
-		
-		System.out.println(this.mean());
-		System.out.println(this.stddev());
-		
-	}
+    private Percolation perc;           // used to decide when grid percolates
+    private int numberTestsPerformed;   // the number of runs performed
+    private double[] fractionOpenSites; // stores the fraction of sites needed for percolation
+                                        // for each run.
+    
+    /**
+     * Runs the percolation experiment T times on a grid of square 
+     * size N by N. For each run stores the fraction of sites in the 
+     * grid that had to be opened before the grid percolates. 
+     *  
+     * @param gridSize     the size of the grid (gridSize-by-gridSize)
+     * @param numberOfRuns the number of times to run the experiment
+     */
+    public PercolationStats(int gridSize, int numberOfRuns) {
+        this.fractionOpenSites = new double[numberOfRuns];
 
-	// Perform a single percolation experiment. Returns nothing.
-	public void experiment() {
+        // Run numberOfRuns experiments
+        for (int i = 0; i < numberOfRuns; ++i) {
+            this.perc = new Percolation(gridSize);    
+            this.experiment();
 
-		while (!perc.percolates()) {			
-			// Pick a random site.
-			int[] random_site ;
-			random_site = chooseRandomSite() ;
-			
-			// Open that site.
-			this.perc.open(random_site[0],  random_site[1]);	
-		}
-		
-		System.out.println("number of open sites: " + this.perc.numberOpenSites) ;
-		
-		return ;
-	}
-	
-	// Pick a random site between (row, column) in {(a,b): 1<=a,b<=N}
-	private int[] chooseRandomSite() {
-				
-		// Pick a random row and column.
-		int[] random_site ;
-		random_site = new int[2] ;
+            this.numberTestsPerformed = this.numberTestsPerformed + 1;
+            this.fractionOpenSites[i] = 
+                    (this.perc.numberOpenSites / (double) (this.perc.size * this.perc.size));
+        }
 
-		int size = this.perc.size ;
+        System.out.println(this.mean());
+        System.out.println(this.stddev());
 
-		random_site[0] = 1 + (int) (Math.random() * size) ;
-		random_site[1] = 1 + (int) (Math.random() * size) ;
-		
-		return random_site ;
-	}
-	
-	
-	public double mean() {
-		double sum = 0.0 ;
-		for (int i=0; i < this.numberTestsPerformed; ++i )
-		{
-			sum = sum + this.fractionOpenSites[i] ;
-		}
-		return (sum / this.numberTestsPerformed) ;
-	}
-	
-	
-	// sample standard deviation of percolation threshold
-	public double stddev() {
-		double numerator = 0.0 ;
-		double mean = this.mean() ;
+    }
 
-		for (int i=0; i < this.numberTestsPerformed; ++i )
-		{
-			double diff = mean - this.fractionOpenSites[i] ;
-			numerator = numerator + (diff * diff) ;
-		}
-		
-		return Math.sqrt(numerator / (double)(this.numberTestsPerformed - 1)) ;	
-	}
-	
-	
-	public static void main()
-	{
-		System.out.println("Hello World!");
-		
-	}
+    // Perform a single percolation experiment. Returns nothing.
+    private void experiment() {
+
+        // Keep running until percolation happens.
+        while (!this.perc.percolates()) {            
+            // Pick a random site.
+            int[] randomSite;
+            randomSite = this.chooseRandomSite();
+
+            // Open that site.
+            this.perc.open(randomSite[0],  randomSite[1]);    
+        }
+
+        return;
+    }
+    
+    // Pick a random site between (row, column) in {(a,b): 1<=a,b<=N}
+    private int[] chooseRandomSite() {
+
+        // Pick a random row and column.
+        int[] randomSite;
+        randomSite = new int[2];
+
+        int size = this.perc.size;
+
+        randomSite[0] = 1 + StdRandom.uniform(size);
+        randomSite[1] = 1 + StdRandom.uniform(size);
+
+        return randomSite;
+    }
+
+    public double mean() {
+        return StdStats.mean(this.fractionOpenSites);
+    }
+    
+
+    // sample standard deviation of percolation threshold
+    public double stddev() {
+        return StdStats.stddev(this.fractionOpenSites);
+    }
+
+    public static void main(String[] args) {
+        
+    }
+
 }
 
 
