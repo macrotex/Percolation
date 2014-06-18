@@ -16,10 +16,9 @@ public class Percolation {
     
     /**
      * The Percolation class.
-     * @param N
+     * @param gridSize the size of the two-dimensional grid.
      */
-    public Percolation(int gridSize)  // create gridSize-by-gridSize grid, with all sites blocked
-    {
+    public Percolation(int gridSize) {
         this.size = gridSize;
        
         // We want to initialize all entries to be full.
@@ -45,23 +44,43 @@ public class Percolation {
                 
     }
     
-    /*
-     * 
+    /**
      * Convert a grid coordinate (i,j) to a a single integer
+     * @param row the row coordinate for the site
+     * @param col the column coordinate for the site
+     * @return the id in the UnionFind array corresponding to site (i, j)
      */
-    private int rowColToSite(int i, int j) {
-        return (i - 1) + ((j - 1) * this.size);
+    private int rowColToSite(int row, int col) {
+        return (row - 1) + ((col - 1) * this.size);
     }
     
-    public boolean isFull(int i, int j) {
-        return (this.grid[i-1][j-1] == FULL) ;
+    /**
+     * Return true if the site at (row, col) is blocked, false otherwise. 
+     * @param row the row of the site
+     * @param col the column of the site
+     * @return true if blocked, false otherwise
+     */
+    public boolean isFull(int row, int col) {
+        return (this.grid[row - 1][col - 1] == FULL);
     }
 
-    public boolean isOpen(int i, int j) {
-        return (!this.isFull(i, j));
+    /**
+     * Return true if the site at (row, col) is OPEN, false otherwise. 
+     * @param row the row of the site
+     * @param col the column of the site
+     * @return true if open, false otherwise
+     */
+    public boolean isOpen(int row, int col) {
+        return (!this.isFull(row, col));
     }
-    
-    // open site (row i, column j) if it is not already open.
+
+    /**
+     * Change the site at (row, col) to OPEN if not already open. After opening,
+     * add this site to the connected components of its open neighbors (north, 
+     * east, south, and west).
+     * @param row the row of the site to be opened
+     * @param col the column of the site to be opened
+     */
     public void open(int row, int col) {
         if (this.isFull(row, col)) {
             this.grid[row - 1][col - 1] = OPEN;
