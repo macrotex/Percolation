@@ -76,8 +76,44 @@ public class PercolationStats {
     public double stddev() {
         return StdStats.stddev(this.fractionOpenSites);
     }
+    
+    /**
+     * Given the mean and standard deviation, return the lower 
+     * part of the 95% confidence interval.
+     * @param mean   the mean for all the runs
+     * @param stdDev the standard deviation for all runs.
+     * @return the high end of the 95% confidence interval
+     */
+    public double confidenceHi(double mean, double stdDev) {    
+        return mean + ((1.96 * stdDev) / Math.sqrt(this.numberTestsPerformed));
+    }
+
+    /**
+     * Given the mean and standard deviation, return the lower 
+     * part of the 95% confidence interval.
+     * @param mean   the mean for all the runs
+     * @param stdDev the standard deviation for all runs.
+     * @return the low end of the 95% confidence interval
+     */
+    public double confidenceLo(double mean, double stdDev) {    
+        return mean - ((1.96 * stdDev) / Math.sqrt(this.numberTestsPerformed));
+    }
 
     public static void main(String[] args) {
+        int gridSize      = Integer.parseInt(args[0]);
+        int numberOfTests = Integer.parseInt(args[1]);
+        
+        PercolationStats perStat = new PercolationStats(gridSize, numberOfTests);
+        
+        double mean = perStat.mean();
+        double stdDev = perStat.stddev();
+        double confHi = perStat.confidenceHi(mean, stdDev);
+        double confLo = perStat.confidenceLo(mean, stdDev);
+        
+        System.out.println(String.format("%-24s= %f", "mean", mean));
+        System.out.println(String.format("%-24s= %f", "stddev", stdDev));
+        System.out.println(String.format("%-24s= %f, %f", "95% confidence interval", confLo, confHi));
+        
 
     }
 

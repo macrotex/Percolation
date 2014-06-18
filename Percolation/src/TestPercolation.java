@@ -99,7 +99,7 @@ public class TestPercolation {
 
 	@Test
 	public void PercolationTestStats1() {
-		PercolationStats perStat = new PercolationStats(200, 100);
+        PercolationStats perStat = new PercolationStats(200, 100);
 	}
 	
 	// Test for exceptions.
