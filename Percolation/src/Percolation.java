@@ -2,13 +2,13 @@
 
 public class Percolation {
     // This is the N x N grid
-    public int[][] grid ;
-    public int size ;
-    public int numberOpenSites ;
+    public int[][] grid;
+    public int size;
+    public int numberOpenSites;
 
-    private WeightedQuickUnionUF uf ;
-    private int topVirtualSite ;
-    private int bottomVirtualSite ;
+    private WeightedQuickUnionUF uf;
+    private int topVirtualSite;
+    private int bottomVirtualSite;
     
     // There are two values that a grid element can have: "open" or "blocked"
     public static final int FULL = 0;
@@ -20,7 +20,7 @@ public class Percolation {
      */
     public Percolation(int N)              // create N-by-N grid, with all sites blocked
     {
-        this.size = N ;
+        this.size = N;
        
         // We want to initialize all entries to be full.
         grid = new int[size][size];
@@ -28,12 +28,12 @@ public class Percolation {
         {
             for (int col = 0; col < grid.length; col++) 
             {
-                grid[row][col] = FULL ;
+                grid[row][col] = FULL;
             }
         }
         
         // No sites are open.
-        this.numberOpenSites = 0 ;
+        this.numberOpenSites = 0;
         
         // Create a UF object for all the points in the N-by-N grid 
         // PLUS two "virtual" sites (the top and bottom).
@@ -42,8 +42,8 @@ public class Percolation {
         uf = new WeightedQuickUnionUF(N*N + 2);
         
         // Set the top and bottom virtual sites.
-        this.topVirtualSite    = N * N ;
-        this.bottomVirtualSite = N * N + 1 ;
+        this.topVirtualSite    = N * N;
+        this.bottomVirtualSite = N * N + 1;
                 
     }
     
@@ -52,30 +52,30 @@ public class Percolation {
      * Convert a grid coordinate (i,j) to a a single integer
      */
     private int rowColToSite(int i, int j) {
-        return (i - 1) + ((j - 1) * this.size) ;
+        return (i - 1) + ((j - 1) * this.size);
     }
     
     public boolean isFull(int i, int j) {
         if (grid[i-1][j-1] == FULL) {
-            return true ;
+            return true;
         } else {
-            return false ;
+            return false;
         }
     }
 
     public boolean isOpen(int i, int j) {
-        return (!this.isFull(i, j)) ;
+        return (!this.isFull(i, j));
     }
     
     // open site (row i, column j) if it is not already open.
     public void open(int row, int col) {
         if (this.isFull(row, col)) {
-            this.grid[row - 1][col - 1] = OPEN ;
-            this.numberOpenSites = this.numberOpenSites + 1 ;
+            this.grid[row - 1][col - 1] = OPEN;
+            this.numberOpenSites = this.numberOpenSites + 1;
             
             // We need to connect this site to the open sites
             // to the North, South, East, and West.
-            int mySite = this.rowColToSite(row, col) ;
+            int mySite = this.rowColToSite(row, col);
             
             // NORTH
             if (row == 1) {
@@ -127,6 +127,6 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates()  {
         //System.out.println(uf.count());
-        return this.uf.connected(this.topVirtualSite, this.bottomVirtualSite) ;
+        return this.uf.connected(this.topVirtualSite, this.bottomVirtualSite);
     }
 }
