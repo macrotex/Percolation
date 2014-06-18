@@ -23,11 +23,11 @@ public class PercolationStats {
 
         // Run numberOfRuns experiments
         for (int i = 0; i < numberOfRuns; ++i) {
-            this.perc = new Percolation(gridSize);    
+            this.perc = new Percolation(gridSize);
             this.experiment();
 
             this.numberTestsPerformed = this.numberTestsPerformed + 1;
-            this.fractionOpenSites[i] = 
+            this.fractionOpenSites[i] =
                     (this.perc.numberOpenSites / (double) (this.perc.size * this.perc.size));
         }
 
@@ -40,18 +40,18 @@ public class PercolationStats {
     private void experiment() {
 
         // Keep running until percolation happens.
-        while (!this.perc.percolates()) {            
+        while (!this.perc.percolates()) {
             // Pick a random site.
             int[] randomSite;
             randomSite = this.chooseRandomSite();
 
             // Open that site.
-            this.perc.open(randomSite[0],  randomSite[1]);    
+            this.perc.open(randomSite[0],  randomSite[1]);
         }
 
         return;
     }
-    
+
     // Pick a random site between (row, column) in {(a,b): 1<=a,b<=N}
     private int[] chooseRandomSite() {
 
@@ -70,7 +70,7 @@ public class PercolationStats {
     public double mean() {
         return StdStats.mean(this.fractionOpenSites);
     }
-    
+
 
     // sample standard deviation of percolation threshold
     public double stddev() {
@@ -78,7 +78,7 @@ public class PercolationStats {
     }
 
     public static void main(String[] args) {
-        
+
     }
 
 }

@@ -18,32 +18,30 @@ public class Percolation {
      * The Percolation class.
      * @param N
      */
-    public Percolation(int N)              // create N-by-N grid, with all sites blocked
+    public Percolation(int gridSize)  // create gridSize-by-gridSize grid, with all sites blocked
     {
-        this.size = N;
+        this.size = gridSize;
        
         // We want to initialize all entries to be full.
-        grid = new int[size][size];
-        for (int row = 0; row < grid.length; row++)
-        {
-            for (int col = 0; col < grid.length; col++) 
-            {
-                grid[row][col] = FULL;
+        this.grid = new int[this.size][this.size];
+        for (int row = 0; row < this.grid.length; row++) {
+            for (int col = 0; col < this.grid.length; col++) {
+                this.grid[row][col] = FULL;
             }
         }
         
         // No sites are open.
         this.numberOpenSites = 0;
         
-        // Create a UF object for all the points in the N-by-N grid 
+        // Create a UF object for all the points in the gridSize-by-gridSize grid 
         // PLUS two "virtual" sites (the top and bottom).
         // The "top" virtual site will have index 0.
         // The "bottom" virtual site will have index 1.
-        uf = new WeightedQuickUnionUF(N*N + 2);
+        this.uf = new WeightedQuickUnionUF(gridSize * gridSize + 2);
         
         // Set the top and bottom virtual sites.
-        this.topVirtualSite    = N * N;
-        this.bottomVirtualSite = N * N + 1;
+        this.topVirtualSite    = gridSize * gridSize;
+        this.bottomVirtualSite = gridSize * gridSize + 1;
                 
     }
     
@@ -56,11 +54,7 @@ public class Percolation {
     }
     
     public boolean isFull(int i, int j) {
-        if (grid[i-1][j-1] == FULL) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.grid[i-1][j-1] == FULL) ;
     }
 
     public boolean isOpen(int i, int j) {
@@ -72,58 +66,56 @@ public class Percolation {
         if (this.isFull(row, col)) {
             this.grid[row - 1][col - 1] = OPEN;
             this.numberOpenSites = this.numberOpenSites + 1;
-            
+
             // We need to connect this site to the open sites
             // to the North, South, East, and West.
             int mySite = this.rowColToSite(row, col);
-            
+
             // NORTH
             if (row == 1) {
                 // This is the top row, so connect to the top virtual site
-                //System.out.println("unioning with top Virtual site");
                 this.uf.union(this.topVirtualSite, mySite);
             } else {
                 // This is NOT the top row, so connect to the above element IF 
                 // the above element is open.
-                if (isOpen(row - 1, col)) {
-                    this.uf.union(rowColToSite(row - 1, col), mySite);
+                if (this.isOpen(row - 1, col)) {
+                    this.uf.union(this.rowColToSite(row - 1, col), mySite);
                 }
             }
-            
+
             // SOUTH
-            if (row == size) {
+            if (row == this.size) {
                 // This is the bottom row, so connect to the bottom virtual site
-                //System.out.println("unioning with bottom Virtual site");
-                this.uf.union(bottomVirtualSite, mySite);
+                this.uf.union(this.bottomVirtualSite, mySite);
             } else {
                 // This is NOT the bottom row, so connect to the below element IF 
                 // the above element is open.
-                if (isOpen(row + 1, col)) {
-                    this.uf.union(rowColToSite(row + 1, col), mySite);
+                if (this.isOpen(row + 1, col)) {
+                    this.uf.union(this.rowColToSite(row + 1, col), mySite);
                 }
             }
-            
+
             // WEST
             if (col != 1) {
                 // This is not on the left edge, so connect to the 
-                // western neightbor.
-                if (isOpen(row, col - 1)) {
-                    this.uf.union(rowColToSite(row, col - 1), mySite);
+                // western neighbor.
+                if (this.isOpen(row, col - 1)) {
+                    this.uf.union(this.rowColToSite(row, col - 1), mySite);
                 }
             }
-            
+
             // EAST
-            if (col != size) {
+            if (col != this.size) {
                 // This is not on the RIGHT edge, so connect to the 
                 // eastern neighbor.
-                if (isOpen(row, col + 1)) {
-                    this.uf.union(rowColToSite(row, col + 1), mySite);
+                if (this.isOpen(row, col + 1)) {
+                    this.uf.union(this.rowColToSite(row, col + 1), mySite);
                 }
             }
-            
+
         }
     }
-    
+
     // does the system percolate?
     public boolean percolates()  {
         //System.out.println(uf.count());
