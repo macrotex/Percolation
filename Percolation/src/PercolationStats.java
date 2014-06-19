@@ -99,12 +99,19 @@ public class PercolationStats {
         return mean - ((1.96 * stdDev) / Math.sqrt(this.numberTestsPerformed));
     }
 
+    /**
+     * With QuickFind,         the elapsed time is ~ T*(N^2.4)
+     * With WeightedQuickFind, the elapsed time is ~ T*(N^1)
+     * @param args
+     */
     public static void main(String[] args) {
         int gridSize      = Integer.parseInt(args[0]);
         int numberOfTests = Integer.parseInt(args[1]);
         
-        PercolationStats perStat = new PercolationStats(gridSize, numberOfTests);
+        Stopwatch stopwatch = new Stopwatch();
         
+        PercolationStats perStat = new PercolationStats(gridSize, numberOfTests);
+
         double mean = perStat.mean();
         double stdDev = perStat.stddev();
         double confHi = perStat.confidenceHi(mean, stdDev);
@@ -114,6 +121,7 @@ public class PercolationStats {
         System.out.println(String.format("%-24s= %f", "stddev", stdDev));
         System.out.println(String.format("%-24s= %f, %f", "95% confidence interval", confLo, confHi));
         
+        System.out.println(String.format("%s: %f", "elapsed time", stopwatch.elapsedTime()));
 
     }
 

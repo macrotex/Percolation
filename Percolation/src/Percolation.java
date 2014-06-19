@@ -135,9 +135,11 @@ public class Percolation {
         }
     }
 
-    // does the system percolate?
+    /**
+     * 
+     * @return Returns true if the system percolates, false otherwise.
+     */
     public boolean percolates()  {
-        //System.out.println(uf.count());
         return this.uf.connected(this.topVirtualSite, this.bottomVirtualSite);
     }
 }
